@@ -23,15 +23,9 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const app = express();
 const port = 5000;
 
-console.log(process.env.DB_PASS)
-
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
-
-
-
 
 const client = new MongoClient(uri, { useNewUrlParser: true,useUnifiedTopology: true });
 client.connect(err => {
@@ -52,7 +46,7 @@ client.connect(err => {
       
     volunteerCollection.insertOne(work)
     .then(result=>{
-        console.log(result.insertedCount);
+
         res.send(result.insertedCount);
     })
   })
@@ -82,8 +76,6 @@ app.get('/registerWorkList', (req,res)=>{
     const bearer = req.headers.authorization;
     if(bearer && bearer.startsWith('Bearer ')){
         const idToken = bearer.split(' ')[1];
-
-        console.log({idToken});
 
         admin.auth().verifyIdToken(idToken)
         .then(function(decodedToken) {
