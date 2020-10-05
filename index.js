@@ -73,7 +73,6 @@ app.get('/totalRegisterList', (req,res)=>{
 
 app.get('/register/:id', (req,res)=>{
     volunteerCollection.find({_id: ObjectId(req.params.id)})
-    // console.log(req.params.object(_id))
     .toArray((err,documents)=>{
         res.send(documents[0]);
     })
