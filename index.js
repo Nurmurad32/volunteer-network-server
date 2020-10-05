@@ -9,7 +9,7 @@ const admin = require('firebase-admin');
 
 
 
-const serviceAccount = require("./configs/volunteer-network-2ef49-firebase-adminsdk-vv17m-91fcbd43e7.json");
+const serviceAccount = require("./volunteer-network-2ef49-firebase-adminsdk-vv17m-91fcbd43e7.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
