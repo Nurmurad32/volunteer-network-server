@@ -5,6 +5,8 @@ const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
 const admin = require('firebase-admin');
+const fileUpload = require('express-fileupload')
+const fs = require('fs-extra');
 
 
 
@@ -22,6 +24,7 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 
 const app = express();
 const port = 5000;
+app.use(fileUpload());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -44,9 +47,9 @@ client.connect(err => {
   app.post('/addWork', (req,res)=>{
     const file = req.files.file;
     const name = req.body.name;
-    const description = req.body.description;
+    const des = req.body.des;
     const date = req.body.date;
-     
+     console.log(name, des, date)
     const newImg = file.data;
         const encImg = newImg.toString('base64');
         var image = {
@@ -54,7 +57,7 @@ client.connect(err => {
             size: file.size,
             img: Buffer.from(encImg, 'base64')
         };
-    volunteerCollection.insertOne({name, date, description, image})
+    volunteerCollection.insertOne({name, date, des, image})
     .then(result => {
         res.send(result.insertedCount > 0)
     })
