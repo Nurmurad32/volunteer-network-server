@@ -40,17 +40,26 @@ client.connect(err => {
         res.send(result.insertedCount);
     })
   })
-  
+  //add work section
   app.post('/addWork', (req,res)=>{
-      const work = req.body;
-      
-    volunteerCollection.insertOne(work)
-    .then(result=>{
-
-        res.send(result.insertedCount);
+    const file = req.files.file;
+    const name = req.body.name;
+    const description = req.body.description;
+    const date = req.body.date;
+     
+    const newImg = file.data;
+        const encImg = newImg.toString('base64');
+        var image = {
+            contentType: file.mimetype,
+            size: file.size,
+            img: Buffer.from(encImg, 'base64')
+        };
+    volunteerCollection.insertOne({name, date, description, image})
+    .then(result => {
+        res.send(result.insertedCount > 0)
     })
   })
-
+//End
 app.get('/totalWorkList', (req,res)=>{
     volunteerCollection.find({})
     .toArray((err,documents)=>{
@@ -105,6 +114,7 @@ app.delete('/delete/:id', (req,res)=>{
     userCollection.deleteOne({_id: ObjectId(req.params.id)})
     .then(result=>{
         res.send(result.deletedCount>0);
+        
     })
 })
 
